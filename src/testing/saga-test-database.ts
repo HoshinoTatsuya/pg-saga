@@ -5,6 +5,7 @@ import { drizzle, type NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { Client, Pool } from 'pg';
 
 import { sagaTablesSql } from '../schema/saga-tables-sql';
+import { dropDatabase } from './drop-database';
 
 /** Адрес суперпользователя: `pnpm test` поднимает postgres:17 в docker. */
 export const PG_TEST_URL = process.env.PG_TEST_URL;
@@ -83,7 +84,7 @@ export const createTestDatabase = async (): Promise<TestDatabase> => {
       await Promise.all(pools.map((item) => item.end().catch(() => undefined)));
       const cleanup = new Client({ connectionString: PG_TEST_URL });
       await cleanup.connect();
-      await cleanup.query(`DROP DATABASE IF EXISTS ${name} WITH (FORCE)`);
+      await dropDatabase(cleanup, name);
       await cleanup.query(`DROP ROLE IF EXISTS ${role}`);
       await cleanup.end();
     },
