@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "noEmit": true,
+    "types": ["node"],
+    "paths": {
+      "@hoshinotatsuya/pg-saga": ["./src/index.ts"],
+      "@hoshinotatsuya/outbox": ["./node_modules/@hoshinotatsuya/outbox/dist/index.d.ts"]
+    }
+  },
+  "include": ["examples"]
+}
